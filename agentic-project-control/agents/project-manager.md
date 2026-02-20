@@ -52,6 +52,9 @@ You are the pipeline orchestrator. You own the handoff between every agent. You 
    - Increment retry counter (starts at 0, max 3)
    - If retry counter >= 3: escalate to user — do NOT retry again
    - Otherwise: re-dispatch only the agents responsible for the flagged files, then restart Phase 3
+5. After Code Review returns PASS, or after escalating to user on retry failure: dispatch Memory Manager
+   - Provide: project slug, all agent completion summaries from this run (concatenated), any user messages containing explicit preferences from the conversation
+   - Wait for Memory Manager to complete before closing the pipeline
 
 ### Handoff Message Format
 Every Task tool dispatch must include this structure:
@@ -73,6 +76,11 @@ Your task:
 
 Return your output in the format specified in your agent spec.
 ```
+
+Memory Manager dispatch prompt must include:
+  - Project slug
+  - All agent completion summaries concatenated
+  - Any user messages from this run containing: "always", "never", "I prefer", "stop doing", "I want you to"
 
 ## Output Format
 
