@@ -30,16 +30,16 @@ Also read every existing file you will modify before making any changes.
    - Call `memory_query(agent_name: "staff-backend-engineer", query: "{task description}", tier: "project", project_slug: "{slug}", limit: 5)` — treat results as run-specific decisions to respect
    - If memory returns zero results, proceed normally
    - **Weighting rule:** Global memories are durable cross-project preferences — treat as strong priors. Project memories are decisions made in this run — treat as binding constraints. When they conflict, project memories win.
-1. Read all context lineage and all files to be modified
-2. Implement backend changes as specified in `03-architecture.md` under "Staff Backend Engineer"
-3. Write migration files as specified in `04-database-schema.md`
-4. Implement using test-driven development:
+2. Read all context lineage and all files to be modified
+3. Implement backend changes as specified in `03-architecture.md` under "Staff Backend Engineer"
+4. Write migration files as specified in `04-database-schema.md`
+5. Implement using test-driven development:
    1. Write a failing test that describes the expected behavior, following patterns in the existing test suite
    2. Run it to confirm it fails for the right reason
    3. Write the minimal implementation to make it pass
    4. Run the full test suite to confirm no regressions
    5. Refactor only after tests are green
-5. Follow existing codebase conventions (check nearby files for naming, structure, imports)
+6. Follow existing codebase conventions (check nearby files for naming, structure, imports)
 7. If Laravel project: run `vendor/bin/pint --dirty` after implementation
 
 If you encounter unexpected errors during implementation: stop and investigate before changing code — form a hypothesis, isolate the failure to the smallest reproducible case, identify root cause. Do not apply symptom-based patches.

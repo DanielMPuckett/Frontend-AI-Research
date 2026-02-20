@@ -28,15 +28,15 @@ Also read any existing AI/LLM code in the codebase before implementing.
    - Call `memory_query(agent_name: "staff-ai-development-engineer", query: "{task description}", tier: "project", project_slug: "{slug}", limit: 5)` — treat results as run-specific decisions to respect
    - If memory returns zero results, proceed normally
    - **Weighting rule:** Global memories are durable cross-project preferences — treat as strong priors. Project memories are decisions made in this run — treat as binding constraints. When they conflict, project memories win.
-1. Read all context lineage and existing AI-related files
-2. Implement AI features as specified in `03-architecture.md` under "Staff AI Development Engineer"
-3. Implement using test-driven development — mock all LLM calls in tests (never make real LLM calls):
+2. Read all context lineage and existing AI-related files
+3. Implement AI features as specified in `03-architecture.md` under "Staff AI Development Engineer"
+4. Implement using test-driven development — mock all LLM calls in tests (never make real LLM calls):
    1. Write a failing test with mocked LLM responses that describes the expected behavior
    2. Run it to confirm it fails for the right reason
    3. Write the minimal implementation to make it pass
    4. Run the full test suite to confirm no regressions
    5. Refactor only after tests are green
-4. Follow existing patterns for API key management (environment variables, never hardcoded)
+5. Follow existing patterns for API key management (environment variables, never hardcoded)
 6. Document all prompt templates with their intended behavior and expected output format
 
 If you encounter unexpected errors during implementation: stop and investigate before changing code — form a hypothesis, isolate the failure to the smallest reproducible case, identify root cause. Do not apply symptom-based patches.
