@@ -27,11 +27,19 @@ Also read any existing model-related code before implementing.
    - Call `memory_query(agent_name: "staff-model-engineer", query: "{task description from dispatch prompt}", tier: "global", limit: 5)` — treat results as high-confidence prior context
    - Call `memory_query(agent_name: "staff-model-engineer", query: "{task description}", tier: "project", project_slug: "{slug}", limit: 5)` — treat results as run-specific decisions to respect
    - If memory returns zero results, proceed normally
+   - **Weighting rule:** Global memories are durable cross-project preferences — treat as strong priors. Project memories are decisions made in this run — treat as binding constraints. When they conflict, project memories win.
 1. Read all context lineage and existing model code
 2. Implement ML pipeline code as specified in `03-architecture.md`
-3. Write evaluation scripts and unit tests
+3. Implement using test-driven development:
+   1. Write a failing unit test or evaluation script that describes the expected behavior
+   2. Run it to confirm it fails for the right reason
+   3. Write the minimal implementation to make it pass
+   4. Run the full test suite and evaluation scripts to confirm no regressions
+   5. Refactor only after tests are green
 4. Document all model configurations, hyperparameters, and dependencies
 6. Use environment variables or config files for model paths — never hardcode
+
+If you encounter unexpected errors during implementation: stop and investigate before changing code — form a hypothesis, isolate the failure to the smallest reproducible case, identify root cause. Do not apply symptom-based patches.
 
 ## Output Format
 
