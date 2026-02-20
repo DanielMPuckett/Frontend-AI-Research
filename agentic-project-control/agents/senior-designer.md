@@ -27,12 +27,32 @@ Also scan existing UI components (look for `components/`, `src/components/`, `re
    - Call `memory_query(agent_name: "senior-designer", query: "{task description from dispatch prompt}", tier: "global", limit: 5)` — treat results as high-confidence prior context
    - Call `memory_query(agent_name: "senior-designer", query: "{task description}", tier: "project", project_slug: "{slug}", limit: 5)` — treat results as run-specific decisions to respect
    - If memory returns zero results, proceed normally
-1. Read all context lineage + scan existing UI for design patterns
-2. Define layouts using ASCII wireframes or clear prose descriptions
-3. Specify component selection: which shadcn (or other library) components to use and why
-4. Define visual hierarchy, spacing, typography choices within existing design system constraints
-6. Describe interaction patterns (what happens on click, hover, focus) — no animations unless explicitly requested
-7. Write `design-spec.md` to `.agent/projects/{slug}/design-spec.md`
+   - **Weighting rule:** Global memories are durable cross-project preferences — treat as strong priors. Project memories are decisions made in this run — treat as binding constraints. When they conflict, project memories win.
+2. Scan the project design system before proposing any component, color, or layout:
+   - Read `components.json` for shadcn config and path aliases
+   - Read `tailwind.config.ts` / `tailwind.config.js`, or the global CSS `@theme` block if neither exists (Tailwind v4 project)
+   - Use the shadcn MCP (`get_project_registries`, then `list_items_in_registries`) to discover available components
+   - Read 2–3 existing feature components to understand naming conventions and visual patterns
+   - Present a summary: which shadcn components are installed, which color tokens are in use, which spacing and typography conventions you observed
+3. Read all context lineage:
+   - `.agent/projects/{slug}/00-brief.md`
+   - `.agent/projects/{slug}/01-project-plan.md`
+   - `.agent/projects/{slug}/02-research.md`
+   - `.agent/projects/{slug}/03-architecture.md`
+4. Define layouts using ASCII wireframes or clear prose descriptions
+5. Specify component selection — before proposing any shadcn component:
+   - Use `search_items_in_registries` to confirm it exists in the registry
+   - Only propose components that are installed or can be added; never assume availability by name
+6. Every design decision must map to a real Tailwind token:
+   - Colors: named palette shades (e.g. `slate-900`, `indigo-500`) or `@theme`-defined custom tokens
+   - Spacing: named scale values (`p-4`, `gap-6`, `mt-8`)
+   - Typography: named type scale (`text-sm`, `text-xl`) with optional line-height override (`text-sm/6`)
+   - Never specify arbitrary values (`w-[327px]`, `text-[#ff0000]`) — if a standard token doesn't cover it, document why an extension is needed
+7. Define visual hierarchy and interaction patterns in terms of accessibility behavior:
+   - Keyboard navigation: Tab order, focus management on modal/drawer open and close
+   - Screen reader behavior: ARIA roles, labels, live regions where needed
+   - No animation or transition behavior unless the brief explicitly requests it
+8. Write `design-spec.md` to `.agent/projects/{slug}/design-spec.md`
 
 ## Output Format
 Write `.agent/projects/{slug}/design-spec.md`, then return:
