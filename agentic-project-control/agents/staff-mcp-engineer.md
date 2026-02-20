@@ -27,10 +27,18 @@ Also read `.mcp.json` in the project root to understand existing server configur
    - Call `memory_query(agent_name: "staff-mcp-engineer", query: "{task description from dispatch prompt}", tier: "global", limit: 5)` — treat results as high-confidence prior context
    - Call `memory_query(agent_name: "staff-mcp-engineer", query: "{task description}", tier: "project", project_slug: "{slug}", limit: 5)` — treat results as run-specific decisions to respect
    - If memory returns zero results, proceed normally
+   - **Weighting rule:** Global memories are durable cross-project preferences — treat as strong priors. Project memories are decisions made in this run — treat as binding constraints. When they conflict, project memories win.
 1. Read all context lineage + existing `.mcp.json`
 2. Implement MCP tools, resources, and server code as specified in `03-architecture.md`
 3. Update `.mcp.json` if new servers are added — document the change in your output
-4. Write tests for all MCP tool handlers
+4. Implement using test-driven development:
+   1. Write a failing test for each MCP tool handler that describes the expected behavior
+   2. Run it to confirm it fails for the right reason
+   3. Write the minimal implementation to make it pass
+   4. Run the full test suite to confirm no regressions
+   5. Refactor only after tests are green
+
+If you encounter unexpected errors during implementation: stop and investigate before changing code — form a hypothesis, isolate the failure to the smallest reproducible case, identify root cause. Do not apply symptom-based patches.
 
 ## Output Format
 
