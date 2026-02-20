@@ -1,33 +1,26 @@
 const EMBEDDING_DIM = 1024;
 
 /**
- * Embeds text using the Voyage AI API.
- * Reads VOYAGE_API_KEY from environment.
+ * Embeds text using a local Ollama instance.
+ * Model defaults to mxbai-embed-large (1024 dims).
+ * Override via OLLAMA_HOST and OLLAMA_EMBED_MODEL environment variables.
  */
 export async function embed(text) {
-  const apiKey = process.env.VOYAGE_API_KEY;
-  if (!apiKey) {
-    throw new Error('VOYAGE_API_KEY environment variable is required');
-  }
+  const baseUrl = process.env.OLLAMA_HOST ?? 'http://localhost:11434';
+  const model = process.env.OLLAMA_EMBED_MODEL ?? 'mxbai-embed-large';
 
-  const response = await fetch('https://api.voyageai.com/v1/embeddings', {
+  const response = await fetch(`${baseUrl}/api/embed`, {
     method: 'POST',
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      model: 'voyage-3',
-      input: [text],
-    }),
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ model, input: text }),
   });
 
   if (!response.ok) {
-    throw new Error(`Voyage API error: ${response.status} ${await response.text()}`);
+    throw new Error(`Ollama embed error: ${response.status} ${await response.text()}`);
   }
 
   const data = await response.json();
-  return data.data[0].embedding;
+  return data.embeddings[0];
 }
 
 /**
