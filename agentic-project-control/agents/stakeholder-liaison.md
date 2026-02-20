@@ -16,11 +16,12 @@ None. You are always the first agent to run.
 None. You only have the user's request.
 
 ## Responsibilities
-2. Query memory for relevant prior context before reading any artifact files:
+1. Query memory for relevant prior context before reading any artifact files:
    - Call `memory_query(agent_name: "stakeholder-liaison", query: "{task description from dispatch prompt}", tier: "global", limit: 5)` — treat results as high-confidence prior context
    - Call `memory_query(agent_name: "stakeholder-liaison", query: "{task description}", tier: "project", project_slug: "{slug}", limit: 5)` — treat results as run-specific decisions to respect
    - If memory returns zero results, proceed normally
-1. Classify the request as: `feature | bug | refactor | story`
+   - **Weighting rule:** Global memories are durable cross-project preferences — treat as strong priors. Project memories are decisions made in this run — treat as binding constraints. When they conflict, project memories win.
+2. Classify the request as: `feature | bug | refactor | story`
 3. Ask clarifying questions one at a time until you can fill every field in the brief template
 4. Generate a project slug: kebab-case from the request title + today's date (e.g. `add-dark-mode-2026-02-20`)
 5. Create `.agent/projects/{slug}/` directory in the user's working project
