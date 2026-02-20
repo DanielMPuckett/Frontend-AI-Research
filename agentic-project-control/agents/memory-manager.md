@@ -48,6 +48,11 @@ Scan the pipeline run's user messages (provided in your input context) for phras
 ### 4. Write Project-Scoped Memories
 For observations with category `decision`, `constraint`, or `inter-agent`: also write them with `tier='project'` and `project_slug={slug}`. These capture run-specific context without polluting global memory.
 
+**Tier selection guide:**
+- Use `tier='global'` when: the observation would change behavior in a future unrelated project (preferences, rejections, best-practices, repeated-requests)
+- Use `tier='project'` when: the observation only matters for this codebase or this run (decisions, constraints, inter-agent notes)
+- When uncertain: if the observation includes a project-specific filename, table name, or API — it's project-scoped
+
 ### 5. Prune Stale Records
 For every agent that had observations in this run, call:
 ```

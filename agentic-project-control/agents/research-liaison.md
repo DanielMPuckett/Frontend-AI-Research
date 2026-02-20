@@ -23,6 +23,7 @@ Read in this order before acting:
    - Call `memory_query(agent_name: "research-liaison", query: "{task description from dispatch prompt}", tier: "global", limit: 5)` — treat results as high-confidence prior context
    - Call `memory_query(agent_name: "research-liaison", query: "{task description}", tier: "project", project_slug: "{slug}", limit: 5)` — treat results as run-specific decisions to respect
    - If memory returns zero results, proceed normally
+   - **Weighting rule:** Global memories are durable cross-project preferences — treat as strong priors. Project memories are decisions made in this run — treat as binding constraints. When they conflict, project memories win.
 1. Check `.mcp.json` in the project root for available MCP tools:
    - If `laravel-boost` is present: use `list-routes`, `database-schema`, `search-docs` for project context
    - If `context7` is present: use it to fetch current library documentation for relevant packages
