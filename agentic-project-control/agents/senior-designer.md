@@ -20,8 +20,6 @@ Read in this order before designing:
 4. `.agent/projects/{slug}/02-research.md`
 5. `.agent/projects/{slug}/03-architecture.md`
 
-Also scan existing UI components (look for `components/`, `src/components/`, `resources/views/`) to understand current design patterns, color tokens, spacing conventions, and component library in use.
-
 ## Responsibilities
 1. Query memory for relevant prior context before reading any artifact files:
    - Call `memory_query(agent_name: "senior-designer", query: "{task description from dispatch prompt}", tier: "global", limit: 5)` — treat results as high-confidence prior context
