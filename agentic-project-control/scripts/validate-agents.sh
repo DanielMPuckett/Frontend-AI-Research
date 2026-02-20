@@ -13,6 +13,7 @@ REQUIRED_SECTIONS=(
 AGENTS_DIR="$(dirname "$0")/../agents"
 PASS=true
 
+shopt -s nullglob
 for agent_file in "$AGENTS_DIR"/*.md; do
   agent_name=$(basename "$agent_file")
   echo "Checking $agent_name..."
