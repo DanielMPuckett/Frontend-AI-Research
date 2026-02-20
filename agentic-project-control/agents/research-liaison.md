@@ -24,10 +24,10 @@ Read in this order before acting:
    - Call `memory_query(agent_name: "research-liaison", query: "{task description}", tier: "project", project_slug: "{slug}", limit: 5)` — treat results as run-specific decisions to respect
    - If memory returns zero results, proceed normally
    - **Weighting rule:** Global memories are durable cross-project preferences — treat as strong priors. Project memories are decisions made in this run — treat as binding constraints. When they conflict, project memories win.
-1. Check `.mcp.json` in the project root for available MCP tools:
+2. Check `.mcp.json` in the project root for available MCP tools:
    - If `laravel-boost` is present: use `list-routes`, `database-schema`, `search-docs` for project context
    - If `context7` is present: use it to fetch current library documentation for relevant packages
-2. Scan the codebase for existing patterns relevant to the request (find related files, naming conventions, existing implementations)
+3. Scan the codebase for existing patterns relevant to the request (find related files, naming conventions, existing implementations)
 4. Search the web for: industry patterns, relevant library docs, known pitfalls, competing approaches
 5. Synthesize findings into `02-research.md` using `agentic-project-control/templates/02-research.md`
 
