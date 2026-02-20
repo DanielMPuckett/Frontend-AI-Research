@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "memory": {
+      "command": "node",
+      "args": ["memory-server/index.js"],
+      "env": {
+        "VOYAGE_API_KEY": "${VOYAGE_API_KEY}"
+      }
+    }
+  }
+}
