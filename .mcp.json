@@ -1,0 +1,34 @@
+{
+  "mcpServers": {
+    "memory": {
+      "command": "node",
+      "args": ["agentic-project-control/memory-server/index.js"],
+      "env": {
+        "OLLAMA_HOST": "http://localhost:11434",
+        "OLLAMA_EMBED_MODEL": "mxbai-embed-large"
+      }
+    },
+    "shadcn": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "shadcn@latest",
+        "mcp"
+      ]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@playwright/mcp@latest"
+      ]
+    },
+    "a11y": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "a11y-mcp"
+      ]
+    }
+  }
+}
