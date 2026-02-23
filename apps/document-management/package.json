@@ -1,0 +1,11 @@
+{
+  "name": "document-management",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "build": "npm run build --prefix client && npm run build --prefix server"
+  },
+  "devDependencies": {
+    "concurrently": "^8.0.0"
+  }
+}
