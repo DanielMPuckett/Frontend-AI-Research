@@ -47,6 +47,13 @@ function mergeMcpJson(cwd, packageRoot) {
     existing = JSON.parse(readFileSync(mcpPath, 'utf8'));
     if (!existing.mcpServers) existing.mcpServers = {};
   }
+  if (existing.mcpServers.memory) {
+    note(
+      'A "memory" MCP server already exists in .mcp.json — skipping merge to avoid overwriting your existing config.',
+      'Skipped'
+    );
+    return;
+  }
   existing.mcpServers.memory = sourceMcp.mcpServers.memory;
   writeFileSync(mcpPath, JSON.stringify(existing, null, 2) + '\n');
 }
@@ -57,7 +64,8 @@ function addGitignoreEntries(cwd) {
   const current = existsSync(gitignorePath)
     ? readFileSync(gitignorePath, 'utf8')
     : '';
-  const toAdd = entries.filter((e) => !current.includes(e));
+  const existingLines = new Set(current.split('\n').map((l) => l.trim()));
+  const toAdd = entries.filter((e) => !existingLines.has(e));
   if (toAdd.length > 0) {
     const addition = '\n# Agentic Project Control\n' + toAdd.join('\n') + '\n';
     writeFileSync(gitignorePath, current + addition);
@@ -106,9 +114,9 @@ for (const dir of [
   mkdirSync(join(CWD, dir), { recursive: true });
 }
 
-// Copy agents
+// Copy agents (skip hidden/placeholder files like .gitkeep)
 const agentsSrc = join(PACKAGE_ROOT, 'agents');
-for (const file of readdirSync(agentsSrc)) {
+for (const file of readdirSync(agentsSrc).filter((f) => !f.startsWith('.'))) {
   const dest = join(CWD, '.claude', 'agents', file);
   if (!existsSync(dest) || overwrite) {
     copyFileSync(join(agentsSrc, file), dest);
@@ -144,10 +152,18 @@ if (withMemory) {
   addGitignoreEntries(CWD);
 
   s.message('Installing memory-server dependencies (npm install)...');
-  execSync('npm install', {
-    cwd: join(CWD, 'memory-server'),
-    stdio: 'pipe',
-  });
+  try {
+    execSync('npm install', {
+      cwd: join(CWD, 'memory-server'),
+      stdio: 'pipe',
+    });
+  } catch (err) {
+    s.stop('npm install failed.');
+    cancel(
+      `Failed to install memory-server dependencies:\n${err.stderr?.toString() ?? err.message}\n\nRun "npm install" manually in the memory-server/ directory.`
+    );
+    process.exit(1);
+  }
 }
 
 s.stop('Done.');

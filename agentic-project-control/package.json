@@ -12,8 +12,10 @@
     "skills",
     "templates",
     "memory-server",
-    "installer"
+    "installer",
+    ".mcp.json"
   ],
+  "license": "MIT",
   "dependencies": {
     "@clack/prompts": "^0.9.0"
   },
