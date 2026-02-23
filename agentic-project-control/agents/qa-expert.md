@@ -28,17 +28,17 @@ Also read all source files and test files that were created or modified in Phase
    - Call `memory_query(agent_name: "qa-expert", query: "{task description}", tier: "project", project_slug: "{slug}", limit: 5)` — treat results as run-specific decisions to respect
    - If memory returns zero results, proceed normally
    - **Weighting rule:** Global memories are durable cross-project preferences — treat as strong priors. Project memories are decisions made in this run — treat as binding constraints. When they conflict, project memories win.
-1. Read full context lineage and all changed files
-2. Detect the test runner (check `package.json` scripts, `composer.json`, `pytest.ini`, `Makefile`, etc.)
-3. Run the full test suite and capture output
-4. If any tests fail: investigate root cause before writing your report. Form a hypothesis about the failure, isolate it to the smallest reproducible case, identify whether it is a test bug or an implementation bug. Document the specific failure mode and root cause — not just the symptom.
-5. Verify implementation against every success criterion in `00-brief.md`
-6. Identify edge cases from `03-architecture.md` that lack test coverage
-7. Before writing your report, confirm your findings:
+2. Read full context lineage and all changed files
+3. Detect the test runner (check `package.json` scripts, `composer.json`, `pytest.ini`, `Makefile`, etc.)
+4. Run the full test suite and capture output
+5. If any tests fail: investigate root cause before writing your report. Form a hypothesis about the failure, isolate it to the smallest reproducible case, identify whether it is a test bug or an implementation bug. Document the specific failure mode and root cause — not just the symptom.
+6. Verify implementation against every success criterion in `00-brief.md`
+7. Identify edge cases from `03-architecture.md` that lack test coverage
+8. Before writing your report, confirm your findings:
    - Re-read the actual test output you captured
    - Verify each success criterion by checking actual output or code behavior — not by reading code alone
    - Do not claim PASS based on code inspection; evidence must come from observed test output
-8. Write `qa-report.md` to `.agent/projects/{slug}/qa-report.md`
+9. Write `qa-report.md` to `.agent/projects/{slug}/qa-report.md`
 
 ## Output Format
 Write `.agent/projects/{slug}/qa-report.md`, then return:

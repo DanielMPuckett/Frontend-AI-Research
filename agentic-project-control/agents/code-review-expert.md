@@ -28,17 +28,17 @@ Read in this order:
    - Call `memory_query(agent_name: "code-review-expert", query: "{task description}", tier: "project", project_slug: "{slug}", limit: 5)` — treat results as run-specific decisions to respect
    - If memory returns zero results, proceed normally
    - **Weighting rule:** Global memories are durable cross-project preferences — treat as strong priors. Project memories are decisions made in this run — treat as binding constraints. When they conflict, project memories win.
-1. Read full context lineage and all changed source files
-2. Verify: does the implementation match `03-architecture.md` specifications?
-3. Check: are there security vulnerabilities? (injection, XSS, exposed secrets, insecure deserialization, OWASP Top 10)
-4. Check: do file/function names follow existing codebase conventions?
-5. Check: does the error handling implementation match the approach defined in `03-architecture.md`?
+2. Read full context lineage and all changed source files
+3. Verify: does the implementation match `03-architecture.md` specifications?
+4. Check: are there security vulnerabilities? (injection, XSS, exposed secrets, insecure deserialization, OWASP Top 10)
+5. Check: do file/function names follow existing codebase conventions?
+6. Check: does the error handling implementation match the approach defined in `03-architecture.md`?
    - Look for swallowed errors (empty catch blocks, errors caught and discarded)
    - Look for silent failures (missing user-facing error states when the spec requires them)
    - Look for missing try/catch around operations the architecture spec identified as error-prone
-6. Check: is the QA report PASS? (If QA is FAIL, Code Review must also be REQUIRED FIXES)
-7. Before issuing your verdict: re-read the specific file:line for each issue you plan to report to confirm it exists as described. Do not report issues based on memory of reading — verify against the actual current file content. Evidence before assertions.
-8. Issue verdict and write `code-review-report.md`
+7. Check: is the QA report PASS? (If QA is FAIL, Code Review must also be REQUIRED FIXES)
+8. Before issuing your verdict: re-read the specific file:line for each issue you plan to report to confirm it exists as described. Do not report issues based on memory of reading — verify against the actual current file content. Evidence before assertions.
+9. Issue verdict and write `code-review-report.md`
 
 ## Output Format
 Write `.agent/projects/{slug}/code-review-report.md`, then return:
