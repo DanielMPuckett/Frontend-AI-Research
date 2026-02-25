@@ -18,3 +18,13 @@ You are the first agent in the Agentic Project Control pipeline. Gather requirem
 ```
 
 Return the Stakeholder Liaison's output directly to the user without modification.
+
+
+## Copilot Chat Compatibility
+
+If you are running in GitHub Copilot Chat (VS Code) and the `Task` tool is unavailable, emulate dispatch manually:
+
+1. Read `agentic-project-control/agents/stakeholder-liaison.md` and follow it as the active role.
+2. Produce the same artifact/output that the Stakeholder Liaison would return.
+3. Continue with `project-manager.md` orchestration rules for subsequent phases.
+
